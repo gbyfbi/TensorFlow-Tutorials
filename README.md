@@ -17,8 +17,9 @@ Newmu's [Theano Tutorials](https://github.com/Newmu/Theano-Tutorials).
 * [Word2vec](08_word2vec.py)
 * [TensorBoard](09_tensorboard.py)
 * [Save and restore net](10_save_restore_net.py)
+* [Generative Adversarial Network](11_gan.py)
 
 ***Dependencies***
-* TensorFlow
+* TensorFlow 1.0 alpha
 * Numpy
 * matplotlib

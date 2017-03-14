@@ -2,7 +2,7 @@
 
 import tensorflow as tf
 import numpy as np
-import input_data
+from tensorflow.examples.tutorials.mnist import input_data
 import os
 
 # This shows how to save/restore your model (trained variables).
@@ -39,7 +39,7 @@ p_keep_input = tf.placeholder("float")
 p_keep_hidden = tf.placeholder("float")
 py_x = model(X, w_h, w_h2, w_o, p_keep_input, p_keep_hidden)
 
-cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(py_x, Y))
+cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=py_x, labels=Y))
 train_op = tf.train.RMSPropOptimizer(0.001, 0.9).minimize(cost)
 predict_op = tf.argmax(py_x, 1)
 
@@ -59,7 +59,7 @@ non_storable_variable = tf.Variable(777)
 # Launch the graph in a session
 with tf.Session() as sess:
     # you need to initialize all variables
-    tf.initialize_all_variables().run()
+    tf.global_variables_initializer().run()
 
     ckpt = tf.train.get_checkpoint_state(ckpt_dir)
     if ckpt and ckpt.model_checkpoint_path:
@@ -70,13 +70,13 @@ with tf.Session() as sess:
     print("Start from:", start)
 
     for i in range(start, 100):
-        for start, end in zip(range(0, len(trX), 128), range(128, len(trX), 128)):
+        for start, end in zip(range(0, len(trX), 128), range(128, len(trX)+1, 128)):
             sess.run(train_op, feed_dict={X: trX[start:end], Y: trY[start:end],
                                           p_keep_input: 0.8, p_keep_hidden: 0.5})
 
         global_step.assign(i).eval() # set and update(eval) global_step with index, i
         saver.save(sess, ckpt_dir + "/model.ckpt", global_step=global_step)
         print(i, np.mean(np.argmax(teY, axis=1) ==
-                         sess.run(predict_op, feed_dict={X: teX, Y: teY,
+                         sess.run(predict_op, feed_dict={X: teX, 
                                                          p_keep_input: 1.0,
                                                          p_keep_hidden: 1.0})))

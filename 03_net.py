@@ -2,7 +2,7 @@
 
 import tensorflow as tf
 import numpy as np
-import input_data
+from tensorflow.examples.tutorials.mnist import input_data
 
 
 def init_weights(shape):
@@ -25,17 +25,17 @@ w_o = init_weights([625, 10])
 
 py_x = model(X, w_h, w_o)
 
-cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(py_x, Y)) # compute costs
+cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=py_x, labels=Y)) # compute costs
 train_op = tf.train.GradientDescentOptimizer(0.05).minimize(cost) # construct an optimizer
 predict_op = tf.argmax(py_x, 1)
 
 # Launch the graph in a session
 with tf.Session() as sess:
     # you need to initialize all variables
-    tf.initialize_all_variables().run()
+    tf.global_variables_initializer().run()
 
     for i in range(100):
-        for start, end in zip(range(0, len(trX), 128), range(128, len(trX), 128)):
+        for start, end in zip(range(0, len(trX), 128), range(128, len(trX)+1, 128)):
             sess.run(train_op, feed_dict={X: trX[start:end], Y: trY[start:end]})
         print(i, np.mean(np.argmax(teY, axis=1) ==
-                         sess.run(predict_op, feed_dict={X: teX, Y: teY})))
+                         sess.run(predict_op, feed_dict={X: teX})))
