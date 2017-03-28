@@ -9,7 +9,8 @@ from glob import glob
 #     tf.train.match_filenames_once("/home/gao/Downloads/flower_photos/daisy/*.jpg"))
 file_name_list = glob("/home/gao/Downloads/flower_photos/daisy/*.jpg")
 # filename_queue = tf.train.string_input_producer(["/home/gao/Downloads/flower_photos/daisy/2331133004_582772d58f_m.jpg"])
-filename_queue = tf.train.string_input_producer(file_name_list, num_epochs=3)
+# filename_queue = tf.train.string_input_producer(file_name_list, num_epochs=3)
+filename_queue = tf.train.string_input_producer(file_name_list)
 # Read an entire image file which is required since they're JPEGs, if the images
 # are too large they could be split in advance to smaller files or use the Fixed
 # reader to split up the file.

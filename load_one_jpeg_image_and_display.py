@@ -2,8 +2,8 @@
 import tensorflow as tf
 import numpy as np
 from PIL import Image
-filename_queue = tf.train.string_input_producer(tf.train.match_filenames_once("/home/gao/Downloads/flower_photos/daisy/*.jpg")) #  list of files to read
-# filename_queue = tf.train.string_input_producer(["/home/gao/Downloads/flower_photos/daisy/2331133004_582772d58f_m.jpg"]) #  list of files to read
+# filename_queue = tf.train.string_input_producer(tf.train.match_filenames_once("/home/gao/Downloads/flower_photos/daisy/*.jpg")) #  list of files to read
+filename_queue = tf.train.string_input_producer(["/home/gao/Downloads/flower_photos/daisy/2331133004_582772d58f_m.jpg"]) #  list of files to read
 
 reader = tf.WholeFileReader()
 key, value = reader.read(filename_queue)
